@@ -5,6 +5,7 @@ if [ ! -f ${NAGIOS_HOME}/etc/htpasswd.users ] ; then
   chown -R nagios.nagios ${NAGIOS_HOME}/etc/htpasswd.users
 fi
 
-/etc/init.d/mysql start
-/etc/init.d/apache2 start
+/etc/init.d/mysql restart
+/etc/init.d/apache2 restart
 /etc/init.d/xinetd restart
+/etc/init.d/nagios restart
