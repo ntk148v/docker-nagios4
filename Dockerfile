@@ -49,18 +49,19 @@ RUN ./configure --enable-command-args --with-nagios-user=${NAGIOS_USER} --with-n
 	&& make all \
 	&& make install \
 	&& make install-xinetd \
-	make install-daemon-config
+	&& make install-daemon-config
 RUN service xinetd restart
 RUN echo "cfg_dir=${NAGIOS_HOME}etc/servers" >> ${NAGIOS_HOME}etc/nagios.cfg
 ADD nagios.conf /etc/apache2/conf-available/nagios.conf
 RUN usermod -G nagcmd www-data
 RUN a2enconf nagios && a2enmod cgi && service apache2 restart
 RUN /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
-RUn service nagios start
+RUN service nagios start
 RUN ln -s /etc/init.d/nagios /etc/rcS.d/S99
-
-ADD start.sh /opt/
-RUN chmod 755 /opt/start.sh
-RUN /opt/start.sh
+ADD check_nrpe.cfg /tmp/
+RUN cat /tmp/check_nrpe.cfg >> /usr/local/nagios/etc/objects/commands.cfg
+ADD start.sh /tmp/
+RUN chmod 755 /tmp/start.sh
+RUN /bin/bash -c "/tmp/start.sh"
 
 EXPOSE 80
