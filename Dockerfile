@@ -26,8 +26,9 @@ WORKDIR /opt/
 RUN wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz \
 	&& tar -xvf nagios-4.1.1.tar.gz
 WORKDIR /opt/nagios-4.1.1/
-RUN	./configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
-	&& make \
+RUN	./configure -with-nagios-command-user=${NAGIOS_CMDUSER} --with-command-group=${NAGIOS_CMDGROUP} \ 
+	--with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} \
+	&& make all \
 	&& make install \
 	&& make install-init \
 	&& make install-config \
