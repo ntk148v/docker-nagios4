@@ -63,6 +63,6 @@ ADD check_nrpe.cfg /tmp/
 RUN cat /tmp/check_nrpe.cfg >> /usr/local/nagios/etc/objects/commands.cfg
 ADD start.sh /tmp/
 RUN chmod 755 /tmp/start.sh
-ENTRYPOINT ["/bin/bash", "-c", "/tmp/start.sh"]
+ENTRYPOINT ["/bin/bash", "/tmp/start.sh"]
 
 EXPOSE 80
