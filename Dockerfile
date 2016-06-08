@@ -24,31 +24,31 @@ RUN apt-get -y install build-essential \
 					   unzip
 RUN cd /opt/
 RUN wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz \
-	&& tar -xvf nagios-4.1.1.tar.gz
-RUN /bin/bash -c "/opt/nagios-4.1.1/configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
-	&& cd /opt/nagios-4.1.1 \
+	&& tar -xvf nagios-4.1.1.tar.gz \ 
+RUN cd /opt/nagios-4.1.1/ \ 
+	&& ./configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
 	&& make \
 	&& make install \
 	&& make install-init \
 	&& make install-config \
-	&& make install-commandmode"
+	&& make install-commandmode
 RUN cd /opt/ \
     && wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz \
-	&& tar -xvf nagios-plugins-2.1.1.tar.gz
-RUN /bin/bash -c "/opt/nagios-plugins-2.1.1/configure --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} --with-openssl \
-	&& cd /opt/nagios-plugins-2.1.1 \
+	&& tar -xvf nagios-plugins-2.1.1.tar.gz \
+RUN cd /opt/nagios-plugins-2.1.1/ \
+	&& ./configure --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} --with-openssl \
 	&& make \
-	&& make install"
+	&& make install
 RUN cd /opt/ \
 	&& wget http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz \
-	&& tar -xvf nrpe-2.15.tar.gz
-RUN /bin/bash -c "/opt/nrpe-2.15/configure --enable-command-args --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} \ 
+	&& tar -xvf nrpe-2.15.tar.gz \
+RUN cd /opt/nrpe-2.15/ \
+	&& ./configure --enable-command-args --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} \ 
 	--with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu \
-	cd /opt/nrpe-2.15/ \
 	&& make all \
 	&& make install \
 	&& make install-xinetd \
-	make install-daemon-config"
+	make install-daemon-config
 RUN service xinetd restart
 RUN echo "cfg_dir=${NAGIOS_HOME}etc/servers" >> ${NAGIOS_HOME}etc/nagios.cfg
 ADD nagios.conf /etc/apache2/conf-available/nagios.conf
@@ -60,6 +60,6 @@ RUN ln -s /etc/init.d/nagios /etc/rcS.d/S99
 
 ADD start.sh /opt/
 RUN chmod 755 /opt/start.sh
-RUN /bin/bash -c "/opt/start.sh"
+RUN /opt/start.sh
 
 EXPOSE 80
