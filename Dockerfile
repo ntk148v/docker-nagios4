@@ -24,7 +24,7 @@ RUN apt-get -y install build-essential \
 					   unzip
 RUN cd /opt/
 RUN wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz \
-	&& tar -xvf nagios-4.1.1.tar.gz \ 
+	&& tar -xvf nagios-4.1.1.tar.gz
 RUN cd /opt/nagios-4.1.1/ \ 
 	&& ./configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
 	&& make \
@@ -34,14 +34,14 @@ RUN cd /opt/nagios-4.1.1/ \
 	&& make install-commandmode
 RUN cd /opt/ \
     && wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz \
-	&& tar -xvf nagios-plugins-2.1.1.tar.gz \
+	&& tar -xvf nagios-plugins-2.1.1.tar.gz
 RUN cd /opt/nagios-plugins-2.1.1/ \
 	&& ./configure --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} --with-openssl \
 	&& make \
 	&& make install
 RUN cd /opt/ \
 	&& wget http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz \
-	&& tar -xvf nrpe-2.15.tar.gz \
+	&& tar -xvf nrpe-2.15.tar.gz
 RUN cd /opt/nrpe-2.15/ \
 	&& ./configure --enable-command-args --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} \ 
 	--with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu \
