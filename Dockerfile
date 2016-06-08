@@ -1,5 +1,5 @@
 FROM ntk148v/lamp-server:v1
-ENV NAGIOS_HOME /usr/local/nagios/
+ENV NAGIOS_HOME /usr/local/nagios
 ENV NAGIOS_USER nagios
 ENV NAGIOS_GROUP nagios
 ENV NAGIOS_CMDUSER nagios
@@ -51,7 +51,8 @@ RUN ./configure --enable-command-args --with-nagios-user=${NAGIOS_USER} --with-n
 	&& make install-xinetd \
 	&& make install-daemon-config
 RUN service xinetd restart
-RUN echo "cfg_dir=${NAGIOS_HOME}etc/servers" >> ${NAGIOS_HOME}etc/nagios.cfg
+RUN mkdir -p ${NAGIOS_HOME}/etc/servers
+RUN echo "cfg_dir=${NAGIOS_HOME}/etc/servers" >> ${NAGIOS_HOME}/etc/nagios.cfg
 ADD nagios.conf /etc/apache2/conf-available/nagios.conf
 RUN usermod -G nagcmd www-data
 RUN a2enconf nagios && a2enmod cgi && service apache2 restart
