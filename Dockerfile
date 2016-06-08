@@ -25,18 +25,18 @@ RUN apt-get -y install build-essential \
 RUN cd /opt/
 RUN wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz \
 	&& tar -xvf nagios-4.1.1.tar.gz
-RUN cd /opt/nagios-4.1.1/ \ 
-	&& ./configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
+RUN cd /opt/nagios-4.1.1/
+RUN	./configure --with-nagios-group=${NAGIOS_GROUP} --with-command-group=${NAGIOS_CMDGROUP} \
 	&& make \
 	&& make install \
 	&& make install-init \
 	&& make install-config \
 	&& make install-commandmode
-RUN cd /opt/ \
-    && wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz \
+RUN cd /opt/
+RUN wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz \
 	&& tar -xvf nagios-plugins-2.1.1.tar.gz
-RUN cd /opt/nagios-plugins-2.1.1/ \
-	&& ./configure --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} --with-openssl \
+RUN cd /opt/nagios-plugins-2.1.1/
+RUN ./configure --with-nagios-user=${NAGIOS_USER} --with-nagios-group=${NAGIOS_GROUP} --with-openssl \
 	&& make \
 	&& make install
 RUN cd /opt/ \
